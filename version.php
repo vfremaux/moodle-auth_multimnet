@@ -29,7 +29,7 @@ $plugin->version   = 2016040300;        // The current plugin version (Date: YYY
 $plugin->requires  = 2016051900;        // Requires this Moodle version
 $plugin->component = 'auth_multimnet';       // Full name of the plugin (used for diagnostics)
 $plugin->maturity = MATURITY_RC;
-$plugin->release = "3.1.0 (Build 2016040300)";
+$plugin->release = "3.2.0 (Build 2016040300)";
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.1.0000';
+$plugin->codeincrement = '3.2.0000';
