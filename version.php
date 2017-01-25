@@ -17,19 +17,20 @@
 /**
  * Version details.
  *
- * @package    auth_multimnet
- * @category   auth
- * @copyright  2013 Valery Fremaux (valery.fremaux@gmail.com)
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     auth_multimnet
+ * @category    auth
+ * @author      Valery Fremaux <valery.fremaux@gmail.com>
+ * @copyright   2013 Valery Fremaux (http://www.mylearningfactory.com)
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2016040300;        // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2016051900;        // Requires this Moodle version
+$plugin->version   = 2015062600;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2014050800;        // Requires this Moodle version
 $plugin->component = 'auth_multimnet';       // Full name of the plugin (used for diagnostics)
 $plugin->maturity = MATURITY_RC;
-$plugin->release = "3.2.0 (Build 2016040300)";
+$plugin->release = "2.7.0 (Build 2015062500)";
 
 // Non moodle attributes.
-$plugin->codeincrement = '3.2.0000';
+$plugin->codeincrement = '2.7.0000';
