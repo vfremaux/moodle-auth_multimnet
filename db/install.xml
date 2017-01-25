@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="auth/multimnet/db" VERSION="20131021" COMMENT="XMLDB file for Moodle auth/multimnet"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="auth_multimnet_user" COMMENT="auth_multimnet_user table retrofitted from MySQL">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="9" NOTNULL="true" SEQUENCE="true" NEXT="mnethostid"/>
+        <FIELD NAME="mnethostid" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="remoteuserid"/>
+        <FIELD NAME="remoteuserid" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="mnethostid" NEXT="idnumber"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" PREVIOUS="remoteuserid" NEXT="username"/>
+        <FIELD NAME="username" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="idnumber" NEXT="firstname"/>
+        <FIELD NAME="firstname" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="username" NEXT="lastname"/>
+        <FIELD NAME="lastname" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="firstname" NEXT="lastseenmnethost"/>
+        <FIELD NAME="lastseenmnethost" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="lastname" NEXT="lastsessionstart"/>
+        <FIELD NAME="lastsessionstart" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="lastseenmnethost" NEXT="lastmovetime"/>
+        <FIELD NAME="lastmovetime" TYPE="int" LENGTH="9" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="lastsessionstart" NEXT="deleted"/>
+        <FIELD NAME="deleted" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="lastmovetime"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary_id" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="mnethostid" UNIQUE="false" FIELDS="mnethostid, username" NEXT="username_unique_ix"/>
+        <INDEX NAME="username_unique_ix" UNIQUE="true" FIELDS="username" COMMENT="Username unique in constellation" PREVIOUS="mnethostid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

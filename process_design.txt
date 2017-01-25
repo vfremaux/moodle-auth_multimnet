@@ -1,0 +1,24 @@
+Logged OUT
+  ==> Login
+    ==> Pre_login_hook
+        ==> Multimnet
+           ==> Check ticket d'arrivée : résultat rien -> PASSTHROUGH
+        ==> CAS
+            ==> Is Authenticated() ? : Non
+            ==> Multiauth : Yes
+ <=== Ecran de choix
+Choix CAS ==>
+   ==> Login
+       ==>Pre_login_hook
+           ==> Multimnet : même situation -> PASSTHROUGH
+           ==> CAS : AuthCAS = "CAS" ==> redirect CAS
+Saisie Username/password ==> Authentifié par serveur CAS ==> Redirect Url de retour (Login)
+  ==> Login
+    ==> Pre_login_hook
+        ==> Multimnet
+           ==> Check ticket d'arrivée : résultat rien -> PASSTHROUGH
+        ==> CAS
+            ==> Is Authenticated() ? : Yes, mais fait rien
+   ==> User_Login() ?
+      ==> Multimnet : Checks username ; Username inconnu (car uniquement connu du ticket CAS VERIFIER)
+      ==> CAS : isAuthenticated() : Yes ==> Répond Vrai

@@ -1,0 +1,175 @@
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * @package auth_multimnet
+ * @category auth
+ * @author Valery Fremaux (valery.fremaux@gmail.com)
+ * @copyright 2011 onwards Valery Fremaux
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+// set to defaults if undefined
+if (!isset($config->host_guess_pattern)) {
+    $config->host_guess_pattern = '<%%HOSTNAME%%>';
+}
+
+if (!isset($config->login_pattern)) {
+    $config->login_pattern = '.*@([^\.]+)';
+}
+
+if (!isset($config->fallback_domain)) {
+    $config->fallback_domain = '';
+}
+
+if (!isset($config->loose_access)) {
+    $config->loose_access = 0;
+}
+
+if (!isset($config->rpc_negotiation_timeout)) {
+    $config->rpc_negotiation_timeout = 30;
+}
+
+$config->mnetsiteadmins = 0 + @$CFG->mnetsiteadmins;
+
+$yesno = array(get_string('no'), get_string('yes'));
+
+if (empty($CFG->mnet_dispatcher_mode) || $CFG->mnet_dispatcher_mode !== 'strict') {
+    print_box(get_string('mnetdisabled','mnet'));
+}
+
+?>
+<div id="mnetconfig">
+<table cellspacing="0" cellpadding="5">
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('loginpattern', 'auth_multimnet'); ?>: </td>
+    <td>
+        <input name="login_pattern" type="text" size="40" value="<?php echo $config->login_pattern ?>" />
+    </td>
+    <td>
+        <?php print_string('configloginpattern', 'auth_multimnet'); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('hostguesspattern', 'auth_multimnet'); ?>: </td>
+    <td>
+        <input name="host_guess_pattern" type="text" size="40" value="<?php echo $config->host_guess_pattern ?>" />
+    </td>
+    <td>
+        <?php print_string('confighostguesspattern', 'auth_multimnet'); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('enablecentralregister', 'auth_multimnet'); ?>: </td>
+    <td>
+        <input type="radio" name="enable_central_register" value="0" <?php echo (empty($config->enable_central_register)) ? 'checked="checked"' : '' ; ?> /> <?php print_string('no') ?> -
+        <input type="radio" name="enable_central_register" value="1" <?php echo (!empty($config->enable_central_register)) ? 'checked="checked"' : '' ; ?> /> <?php print_string('yes') ?>
+    </td>
+    <td>
+        <?php print_string('configenablecentralregister', 'auth_multimnet'); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('fallbackdomain', 'auth_multimnet'); ?>: </td>
+    <td>
+    	<?php
+    		global $DB;
+    		$mnethostsopts = $DB->get_records_select_menu('mnet_host', " deleted = 0 AND name != '' AND ip_address != '' ", array(), 'name', 'id,name');
+			echo html_writer::select($mnethostsopts, 'fallback_domain', $config->fallback_domain);    	
+    	?>
+    </td>
+    <td>
+        <?php print_string('configfallbackdomain', 'auth_multimnet'); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('looseaccess', 'auth_multimnet'); ?>: </td>
+    <td>
+        <input type="radio" name="loose_access" value="0" <?php echo (empty($config->loose_access)) ? 'checked="checked"' : '' ; ?> /> <?php print_string('no') ?> -
+        <input type="radio" name="loose_access" value="1" <?php echo (!empty($config->loose_access)) ? 'checked="checked"' : '' ; ?> /> <?php print_string('yes') ?>
+    </td>
+    <td>
+        <?php print_string('configlooseaccess', 'auth_multimnet'); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><?php print_string('mnetsiteadmins', 'auth_multimnet'); ?>: </td>
+    <td>
+        <input type="radio" name="mnetsiteadmins" value="0" <?php echo (empty($config->mnetsiteadmins)) ? 'checked="checked"' : '' ; ?> /> <?php print_string('no') ?> -
+        <input type="radio" name="mnetsiteadmins" value="1" <?php echo (!empty($config->mnetsiteadmins)) ? 'checked="checked"' : '' ; ?> /> <?php print_string('yes') ?>
+    </td>
+    <td>
+        <?php print_string('configmnetsiteadmins', 'auth_multimnet'); ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td align="right"><label for="rpc_negotiation_timeout"><?php print_string('rpc_negotiation_timeout', 'auth_multimnet'); ?>: </label></td>
+    <td>
+        <input name="rpc_negotiation_timeout" id="rpc_negotiation_timeout" type="text" size="5" value="<?php echo $config->rpc_negotiation_timeout ?>" />
+        <?php
+
+        if (isset($err['rpc_negotiation_timeout'])) {
+            echo $OUTPUT->error_text($err['rpc_negotiation_timeout']);
+        }
+
+        ?>
+    </td>
+    <td>
+        <?php
+
+        print_string('auth_multimnet_rpc_negotiation_timeout', 'auth_multimnet');
+
+        ?>
+    </td>
+</tr>
+
+<tr valign="top" class="required">
+    <td colspan="3"><?php print_string('auth_mnet_roamin', 'auth_mnet'); ?>: </td>
+</tr>
+<?php
+foreach($id_providers as $host) {
+?>
+<tr valign="top" class="required">
+    <td align="right"><?php echo $host['name']; ?>: </td>
+    <td colspan="2"><?php echo $host['wwwroot']; ?> </td>
+</tr>
+<?php
+}
+?>
+<tr valign="top" class="required">
+    <td colspan="3"><?php print_string('auth_mnet_roamout', 'auth_mnet'); ?>: </td>
+</tr>
+<?php
+foreach($service_providers as $host) {
+?>
+<tr valign="top" class="required">
+    <td align="right"><?php echo $host['name']; ?>: </td>
+    <td colspan="2"><?php echo $host['wwwroot']; ?> </td>
+</tr>
+<?php
+}
+?>
+</table>
+</div>
