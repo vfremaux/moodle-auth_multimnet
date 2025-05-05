@@ -55,7 +55,7 @@ class auth_plugin_multimnet extends auth_plugin_base{
     /**
      * Constructor.
      */
-    function auth_plugin_multimnet() {
+    public function __contruct() {
         $this->authtype = 'multimnet';
         $this->config = get_config('auth/multimnet');
         $this->mnet = get_mnet_environment();
